@@ -6,7 +6,7 @@ import java.util.Map;
 public interface MemCache<K, V> {
 
     public static enum Type {
-        XMEM, GUAVA, PERSISTENT, LRU, REDIS
+        XMEM, GUAVA, PERSISTENT, REDIS
     };
 
     public boolean exists(K key);
