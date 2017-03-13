@@ -36,7 +36,7 @@ public class DateUtil {
      * @param field @see Calendar.DATE
      * @return
      */
-    public int diffTime(Date begin,Date end,int field){
+    public static int diffTime(Date begin,Date end,int field){
         long diff=end.getTime()-begin.getTime();
         switch (field){
             case Calendar.DATE:
