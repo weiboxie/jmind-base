@@ -3,6 +3,7 @@ package jmind.base.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +28,62 @@ public class DateUtil {
             return new ConcurrentHashMap<String, SimpleDateFormat>();
         }
     };
+
+    /**
+     * 时间差
+     * @param begin
+     * @param end
+     * @param field @see Calendar.DATE
+     * @return
+     */
+    public int diffTime(Date begin,Date end,int field){
+        long diff=end.getTime()-begin.getTime();
+        switch (field){
+            case Calendar.DATE:
+                return (int) (diff/DAY);
+            case Calendar.HOUR:
+                return (int) (diff/HOUR);
+            case Calendar.MINUTE:
+                return (int) (diff/MINUTE);
+            case Calendar.SECOND:
+                return (int) (diff/1000);
+            default: return (int) diff;
+        }
+
+    }
+
+    /**
+     * 某天开始事假
+     * @param date 为null ，取当前时间
+     * @return
+     */
+    public static Date getStartOfDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        if(date!=null)
+        calendar.setTime(date);
+
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 某天结束时间
+     * @param date 为null，取当前时间
+     * @return
+     */
+    public static Date getEndOfDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        if(date!=null)
+            calendar.setTime(date);
+        calendar.set(Calendar.HOUR,23);
+        calendar.set(Calendar.MINUTE,59);
+        calendar.set(Calendar.SECOND,59);
+        calendar.set(Calendar.MILLISECOND,999);
+        return calendar.getTime();
+    }
 
     public static String Today = getToday();
 
@@ -100,9 +157,7 @@ public class DateUtil {
         return getFormat(DEFAULT_PATTERN).format(new Date());
     }
 
-    /**
-     * @see MopDateUtil#getDayInt(long)
-     */
+
     public static int getDayInt(Date date) {
         return date == null ? 0 : getDayInt(date.getTime());
     }
@@ -166,9 +221,7 @@ public class DateUtil {
 
     public static String getLocaleTime() {
         Date date = new Date();
-
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.CHINA);
-
         return dateFormat.format(date);
     }
 
@@ -198,7 +251,7 @@ public class DateUtil {
     /**
      * 使用若干种规则解析时间
      * 
-     * @see #parse(String, String)
+     * parse(String, String)
      */
     public static Date parse(String time, String... forms) {
         for (String form : forms) {
