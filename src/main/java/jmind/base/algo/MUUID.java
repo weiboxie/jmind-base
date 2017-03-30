@@ -1,5 +1,7 @@
 package jmind.base.algo;
 
+import jmind.base.algo.atomic.AtomicPositiveInteger;
+
 import java.net.NetworkInterface;
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -337,7 +339,7 @@ public class MUUID implements Comparable<MUUID>, java.io.Serializable {
         return z;
     }
 
-    private static AtomicInteger _nextInc = new AtomicInteger((new java.util.Random()).nextInt());
+    private static AtomicPositiveInteger _nextInc = new AtomicPositiveInteger((new java.util.Random()).nextInt());
 
     private static final int _genmachine;
     static {

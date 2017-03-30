@@ -33,12 +33,14 @@ public class SignatureUtil {
         }
         sb.append(url);
         for (Entry<String, ?> entry : params.entrySet()) {
-            sb.append(entry.getKey()).append("=").append(entry.getValue());
+            if (entry.getValue() != null && !DataUtil.isEmpty(entry.getValue().toString()))
+                sb.append(entry.getKey()).append("=").append(entry.getValue());
         }
         String encode = null;
         try {
             encode = URLEncoder.encode(sb.toString(), GlobalConstants.UTF8);
         } catch (UnsupportedEncodingException e) {
+            encode=sb.toString();
         }
 
         return MD5.md5(encode + secretKey);

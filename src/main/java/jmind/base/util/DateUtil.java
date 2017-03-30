@@ -182,20 +182,34 @@ public class DateUtil {
         return (int) (time / (MINUTE * m));
     }
 
+
+
+
     /**
-     * 往前或者后 推多少天
-     * @param days
+     * 增加时间
+     * @param date 为null 为当前时间
+     * @param field  @see Calendar.DATE
+     * @param amount  时长
      * @return
      */
-    public static Calendar addDay(int days) {
+    public static Date add(Date date,int field, int amount){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, days);
-        return calendar;
+        if(date!=null)
+            calendar.setTime(date);
+        calendar.add(field,  amount);
+        return calendar.getTime();
     }
 
-    public static Date addDay(Date date, int days) {
-        return new Date(date.getTime() + days * DAY);
-    }
+
+//    public static Calendar addDay(int days) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.DATE, days);
+//        return calendar;
+//    }
+//
+//    public static Date addDay(Date date, int days) {
+//        return new Date(date.getTime() + days * DAY);
+//    }
 
     /**
      * 往前或者后 推多少天, 返回字符串格式yyyyMMdd
@@ -205,19 +219,11 @@ public class DateUtil {
      */
     public static String addDay(String date, int days) {
         Date d = parse(date, DEFAULT_PATTERN);
-        Date date2 = addDay(d, days);
+        Date date2 = add(d, Calendar.DATE,days);
         return getFormat(DEFAULT_PATTERN).format(date2);
     }
 
-    public static Calendar addHour(int hour) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, hour);
-        return calendar;
-    }
 
-    public static Date addMinute(int minute) {
-        return new Date(System.currentTimeMillis() + MINUTE * minute);
-    }
 
     public static String getLocaleTime() {
         Date date = new Date();

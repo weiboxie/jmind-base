@@ -1,5 +1,6 @@
 package jmind.base.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -86,6 +87,8 @@ public abstract class RequestUtil {
         return m;
     }
 
+
+
     public static String toQueryString(Map<String, ?> params) {
         if (DataUtil.isEmpty(params))
             return DataUtil.EMPTY;
@@ -117,6 +120,29 @@ public abstract class RequestUtil {
         if (ajax != null)
             map.put("ajax", "1");
         return map;
+    }
+
+    /**
+     * 获取完整url
+     * @param uri
+     * @param params 参数会encode
+     * @return
+     */
+    public static  String getURL(String uri,Map<String, ?> params){
+        if (DataUtil.isEmpty(params))
+            return uri;
+        StringBuilder sb = new StringBuilder();
+        for (Entry<String, ?> entry : params.entrySet()) {
+            try {
+                 if(entry.getValue()!=null)
+                sb.append("&").append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue().toString(),GlobalConstants.UTF8));
+            } catch (UnsupportedEncodingException e) {
+            }
+        }
+        if(uri.contains("?")){
+            return uri+sb.toString();
+        }
+        return uri+"?"+sb.substring(1);
     }
 
     public static String getURL(final HttpServletRequest request) {
