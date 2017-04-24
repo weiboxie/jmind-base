@@ -8,12 +8,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import jmind.base.lang.Pair;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 public class RandUtil {
-    private static final String[] word = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Q", "W", "E", "R", "T",
-            "Y", "U", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M" };
+    private static final String[] word = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Q", "W", "E", "R", "T",
+            "Y", "U", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"};
 
     public static final Random getRandom() {
         return _random;
@@ -38,6 +43,7 @@ public class RandUtil {
 
     /**
      * 从一个list 里面随机取一个
+     *
      * @param list
      * @return
      */
@@ -49,7 +55,8 @@ public class RandUtil {
     }
 
     /**
-     *  从一堆list 随机取一个
+     * 从一堆list 随机取一个
+     *
      * @param lists
      * @return
      */
@@ -79,6 +86,7 @@ public class RandUtil {
 
     /**
      * list 分页
+     *
      * @param list
      * @param pageNo 从0 开始
      * @param limit
@@ -96,13 +104,10 @@ public class RandUtil {
 
     /**
      * 从list中随机选出n个
-     * 
-     * @param list
-     *            原列表
-     * @param limit
-     *            随机取出数量
-     * @param stable
-     *            结果列表中的数据是否保持在原list中顺序，true为保持原顺序
+     *
+     * @param list   原列表
+     * @param limit  随机取出数量
+     * @param stable 结果列表中的数据是否保持在原list中顺序，true为保持原顺序
      * @return 保证非空
      */
     public static <T> List<T> randSubList(List<T> list, int limit, boolean stable) {
@@ -203,11 +208,27 @@ public class RandUtil {
     }
 
     /**
-     * 
-     * @param length
-     *            随机字符长度
-     * @param abc
-     *            是否可以有字母
+     *
+     * @param length 随机数位数
+     * @param abc 是否包含字母
+     * @param max set 条数
+     * @return
+     */
+    public static Set<String> randomCode(int length, boolean abc, int max) {
+  //   return    Stream.generate(()->randomCode(length, abc)).distinct().limit(max).collect(toSet());
+        Set<String> set = new HashSet<>();
+        do {
+            set.add(randomCode(length, abc));
+        } while (set.size() < max);
+        return set;
+    }
+
+
+
+
+    /**
+     * @param length 随机字符长度
+     * @param abc    是否可以有字母
      * @return
      */
     public static String randomCode(int length, boolean abc) {
@@ -228,6 +249,7 @@ public class RandUtil {
 
     /**
      * 不包含字母 I 和O  的随机数。都是大写格式
+     *
      * @param length
      * @return
      */
@@ -242,6 +264,7 @@ public class RandUtil {
 
     /**
      * 随机加减法验证码
+     *
      * @return
      */
     public static final Pair<String, Integer> mathVCode() {
