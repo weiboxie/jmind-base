@@ -21,9 +21,11 @@ public class HeapSort {
 
     private int[] a ;
 
-    public void heapSort(int[] a) {
-
-        buildMaxHeap(a);
+    public  HeapSort(int[] a) {
+         this.a=a;
+        for (int i = a.length / 2 + 1; i >= 0; i--) {
+            maxHeapify(a, i);
+        }
         int length = a.length;
         for (int i = a.length - 1; i >= 1; i--) {
             swap(a, i, 0);
@@ -32,12 +34,7 @@ public class HeapSort {
         }
     }
 
-    private void buildMaxHeap(int a[]) {
-        this.a=a;
-        for (int i = a.length / 2 + 1; i >= 0; i--) {
-            maxHeapify(a, i);
-        }
-    }
+
 
     /**
      * 维持最大堆
@@ -86,11 +83,11 @@ public class HeapSort {
         a[j] = tmp;
     }
 
-    //max-priority-queue
+    //max-priority-queue  返回堆的最大值
     public int maximum() {
         return a[0];
     }
-
+    // 返回堆的最大值并删除
     public int extractMax() {
         int max = a[0];
         a[0] = a[a.length - 1];
@@ -99,7 +96,7 @@ public class HeapSort {
         maxHeapify(newA, 0, newA.length);
         return max;
     }
-
+    // 降下标为i的元素增大为key
     public void heapIncreaseKey(int i, int key) {
         if (key > a[i]) {
             a[i] = key;
@@ -111,7 +108,7 @@ public class HeapSort {
             throw new IllegalArgumentException("key is too small");
         }
     }
-
+   // 降元素key插入堆中
     public void maxHeapInsert(int key) {
         int[] newA = new int[a.length + 1];
         System.arraycopy(a, 0, newA, 0, a.length);
