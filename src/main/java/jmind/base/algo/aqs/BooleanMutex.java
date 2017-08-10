@@ -45,7 +45,6 @@ public class BooleanMutex {
 
     /**
      * 阻塞等待Boolean为true,允许设置超时时间
-     * 
      * @param timeout
      * @param unit
      * @throws InterruptedException
