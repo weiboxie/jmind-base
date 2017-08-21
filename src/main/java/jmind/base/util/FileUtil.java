@@ -37,7 +37,7 @@ public class FileUtil {
 
     /**
      * 
-     * @param imageUrl
+     * @param file
      * @return  ".jpg"
      */
     public static String getFileType(String file) {

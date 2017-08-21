@@ -18,6 +18,8 @@ import java.util.List;
 
 public class IOUtil {
 
+
+
     // 1. String --> InputStream
     public static InputStream String2InputStream(String str) {
         ByteArrayInputStream stream = new ByteArrayInputStream(str.getBytes());
@@ -126,7 +128,8 @@ public class IOUtil {
             code = "GBK";
         }
         //  一定要reset ，否则读取的时候位置就错了
-        in.reset();
+        if(in.markSupported())
+            in.reset();
         return code;
     }
 
@@ -136,7 +139,7 @@ public class IOUtil {
      * @return
      * @throws IOException
      */
-    public String getEncode(InputStream in) throws IOException {
+    public static String getEncode(InputStream in) throws IOException {
         byte[] head = new byte[3];
         in.read(head);
         String code = "gb2312";
@@ -146,7 +149,8 @@ public class IOUtil {
             code = "Unicode";
         if (head[0] == -17 && head[1] == -69 && head[2] == -65)
             code = "UTF-8";
-        in.reset();
+        if(in.markSupported())
+            in.reset();
         return code;
     }
 
@@ -181,6 +185,7 @@ public class IOUtil {
         BufferedReader br = null;
         try {
             fr = new FileReader(path);
+            System.err.println("sss==="+  fr.getEncoding());
             br = new BufferedReader(fr);
             String tmp = "";
             while ((tmp = br.readLine()) != null) {
