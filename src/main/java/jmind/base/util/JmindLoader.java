@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import jmind.base.lang.IProperties;
 import jmind.base.lang.SourceProperties;
+import jmind.base.util.reflect.ClassUtil;
 
 /**
  * 参考dubbo SPI（Service Provider Interface) ExtensionLoader 的简单实现。

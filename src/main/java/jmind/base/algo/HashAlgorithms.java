@@ -11,7 +11,7 @@ package jmind.base.algo;
 public class HashAlgorithms {
 
     /**
-     * @see http://blog.csdn.net/fengxinze/article/details/7186765
+     * @link http://blog.csdn.net/fengxinze/article/details/7186765
      * Times33” hash算法
      * @param str
      * @return

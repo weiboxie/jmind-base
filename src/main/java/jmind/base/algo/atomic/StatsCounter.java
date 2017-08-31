@@ -3,16 +3,17 @@ package jmind.base.algo.atomic;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.LongAdder;
 
 public class StatsCounter {
 
-    private final LongAddable slowCount = LongAddables.create();
-    private final LongAddable successCount = LongAddables.create();
-    private final LongAddable exceptionCount = LongAddables.create();
-    private final LongAddable totaSuccessTime = LongAddables.create();
-    private final LongAddable totalExceptionTime = LongAddables.create();
-    private long min = Integer.MAX_VALUE;
-    private long max;
+    private final LongAdder slowCount = new LongAdder();
+    private final LongAdder successCount =  new LongAdder();
+    private final LongAdder exceptionCount =  new LongAdder();
+    private final LongAdder totaSuccessTime =  new LongAdder();
+    private final LongAdder totalExceptionTime =  new LongAdder();
+    private volatile long min = Integer.MAX_VALUE;
+    private volatile long max;
 
     public void recordSuccess(long startTime, int slowTime) {
         successCount.increment();

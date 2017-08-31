@@ -1,5 +1,6 @@
 package jmind.base.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,7 +9,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class CollectionsUtil {
+public class CollectionUtil {
+    public static <T> Object toArray(List<T> list, Class<T> clazz) {
+        Object array = Array.newInstance(clazz, list.size());
+        for (int i = 0; i < list.size(); i++) {
+            Array.set(array, i, list.get(i));
+        }
+        return array;
+    }
 
     public static List<String> asList(String str, String separator) {
         if (DataUtil.isEmpty(str))

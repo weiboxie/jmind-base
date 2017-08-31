@@ -27,6 +27,9 @@ public abstract class DataUtil {
     public static boolean isEmpty(String str) {
         return str == null || str.trim().isEmpty();
     }
+    public static boolean isNotEmpty( String str) {
+        return !isEmpty(str);
+    }
 
     public static boolean isEmpty(Collection<?> coll) {
         return (coll == null || coll.isEmpty());
@@ -274,7 +277,7 @@ public abstract class DataUtil {
      * 组合字符串
      * 2013-11-27 
      * @param prefix
-     * @param f
+
      * @return
      */
     public static String composeKey(String prefix, Object... o) {
@@ -289,14 +292,42 @@ public abstract class DataUtil {
 
     }
 
+    public static String getFullName(String name, String path) {
+        return ":" + (isNotEmpty(path) ? name + "." + path : name);
+    }
+
+    public static String underscoreName(String name) {
+        if (isEmpty(name)) {
+            return EMPTY;
+        }
+        StringBuilder result = new StringBuilder();
+        result.append(name.substring(0, 1).toLowerCase());
+        for (int i = 1; i < name.length(); i++) {
+            String s = name.substring(i, i + 1);
+            String slc = s.toLowerCase();
+            if (!s.equals(slc)) {
+                result.append("_").append(slc);
+            } else {
+                result.append(s);
+            }
+        }
+        return result.toString();
+    }
+
     /**
      * 首字母大写
      * @param str
      * @return
      * <a href="http://my.oschina.net/u/556800" class="referer" target="_blank">@return</a> 
      */
-    public static String firstLetterToUpper(String str) {
+    public static String firstLetterToUpperCase(String str) {
         Character c = Character.toUpperCase(str.charAt(0));
         return c.toString().concat(str.substring(1));
     }
+
+
+    public static String firstLetterToLowerCase(String str) {
+        return str.substring(0, 1).toLowerCase() + str.substring(1);
+    }
+
 }
