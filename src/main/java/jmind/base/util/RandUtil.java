@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -24,7 +25,7 @@ public class RandUtil {
         return _random;
     }
 
-    private final static Random _random = new Random();
+    private final static Random _random =  ThreadLocalRandom.current();
 
     public static int nextInt(int maxValue) {
         return _random.nextInt(maxValue);

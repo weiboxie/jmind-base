@@ -46,7 +46,9 @@ public class MapBeanUtil {
                 // 下面一句可以 try 起来，这样当一个属性赋值失败的时候就不会影响其他属性赋值。
                 try {
                     Object value = map.get(propertyName);
-                    descriptor.getWriteMethod().invoke(obj, value);
+                    Method writeMethod = descriptor.getWriteMethod();
+                    writeMethod.setAccessible(true);
+                    writeMethod.invoke(obj, value);
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
@@ -65,30 +67,25 @@ public class MapBeanUtil {
      */
     public static Map<String, Object> convertBean(Object bean) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
-
         try {
             Class<? extends Object> type = bean.getClass();
-
             BeanInfo beanInfo = Introspector.getBeanInfo(type);
-
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             for (int i = 0; i < propertyDescriptors.length; i++) {
                 PropertyDescriptor descriptor = propertyDescriptors[i];
                 String propertyName = descriptor.getName();
-                if (!propertyName.equals("class")) {
                     Method readMethod = descriptor.getReadMethod();
-                    Object result = readMethod.invoke(bean, new Object[0]);
+                    readMethod.setAccessible(true);
+                    Object result = readMethod.invoke(bean);
                     if (result != null) {
                         returnMap.put(propertyName, result);
-                    } else {
-                        returnMap.put(propertyName, "");
                     }
-                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // 删除class 属性
+        returnMap.remove("class");
         return returnMap;
     }
 

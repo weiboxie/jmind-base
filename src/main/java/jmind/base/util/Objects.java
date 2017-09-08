@@ -17,6 +17,10 @@
 package jmind.base.util;
 
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
+
 /**
  * @author xieweibo
  */
@@ -28,6 +32,20 @@ public class Objects {
 
   public static int hashCode( Object... objects) {
     return java.util.Arrays.hashCode(objects);
+  }
+
+  public static String toString(Object object){
+    if(object==null){
+      return DataUtil.EMPTY;
+    }
+    if(object instanceof Date){
+      return Long.toString(((Date) object).getTime());
+    }
+    return object.toString();
+  }
+
+  public static byte[] toByte(Object object){
+     return toString(object).getBytes();
   }
 
 }
