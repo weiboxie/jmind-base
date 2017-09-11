@@ -1,4 +1,4 @@
-package jmind.base.util;
+package jmind.base.util.bean;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -32,7 +32,7 @@ public class MapBeanUtil {
      * @throws InvocationTargetException
      *             如果调用属性的 setter 方法失败
      */
-    public static <T> T convertMap(Class<T> type, Map<?, ?> map) throws IntrospectionException, IllegalAccessException,
+    public static <T> T map2Bean(Class<T> type, Map<?, ?> map) throws IntrospectionException, IllegalAccessException,
             InstantiationException, InvocationTargetException {
         BeanInfo beanInfo = Introspector.getBeanInfo(type); // 获取类属性
         T obj = type.newInstance(); // 创建 JavaBean 对象
@@ -65,7 +65,7 @@ public class MapBeanUtil {
      * @throws IllegalAccessException 如果实例化 JavaBean 失败
      * @throws InvocationTargetException 如果调用属性的 setter 方法失败
      */
-    public static Map<String, Object> convertBean(Object bean) {
+    public static Map<String, Object> bean2Map(Object bean) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
         try {
             Class<? extends Object> type = bean.getClass();
