@@ -1,39 +1,46 @@
 package jmind.base.cache;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-public interface MemCache<K, V> {
+/**
+ * Created by weibo.xwb on 2017/9/11.
+ */
+public interface ICache {
 
+    public static enum Type {
+        XMEM, GUAVA, PERSISTENT, REDIS
+    };
 
-    public boolean exists(K key);
+    public boolean exists(String key);
 
-    public boolean set(K key, V value);
+    public boolean set(String key, Object value);
 
     /**
-     * 
-     * 2013-12-4 
+     *
+     * 2013-12-4
      * @param key
      * @param seconds 过期时间，单位秒，目前只有xmemcache 实现有效  和xmemcache 接口保持一致 过期参数
      * @param value
-    
+
      */
-    public boolean set(K key, int seconds, V value);
+    public boolean set(String key, int seconds, Object value);
 
-    public boolean delete(K key);
+    public boolean delete(String key);
 
-    public V get(K key);
+    public <T> T get(String key);
 
-    public Map<K, V> getMulti(Collection<K> keys);
+    public  Map<String, ?> getMulti(Collection<String> keys);
 
     public Object getCache();
 
     public void clear();
 
-    default V computeIfAbsent(K key,final int exp,
-                              Function<? super K, ? extends V> mappingFunction) {
+    default <V> V computeIfAbsent(String key,final int exp,
+                              Function<String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
         V v;
         if ((v = get(key)) == null) {
@@ -46,8 +53,8 @@ public interface MemCache<K, V> {
         return v;
     }
 
-    default V computeIfAbsent(K key,
-                              Function<? super K, ? extends V> mappingFunction) {
+    default <V> V computeIfAbsent(String key,
+                              Function<? super String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
         V v;
         if ((v = get(key)) == null) {
