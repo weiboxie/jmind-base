@@ -47,7 +47,7 @@ public class DateUtil {
     }
 
     /**
-     * 某天开始事假
+     * 某天开始时间
      * @param date 为null ，取当前时间
      * @return
      */
