@@ -32,32 +32,34 @@ public interface MemCache<K, V> {
 
     public void clear();
 
-    default V computeIfAbsent(K key,final int exp,
-                              Function<? super K, ? extends V> mappingFunction) {
-        Objects.requireNonNull(mappingFunction);
-        V v;
-        if ((v = get(key)) == null) {
-            V newValue;
-            if ((newValue = mappingFunction.apply(key)) != null) {
-                set(key, exp,newValue);
-                return newValue;
-            }
-        }
-        return v;
-    }
-
-    default V computeIfAbsent(K key,
-                              Function<? super K, ? extends V> mappingFunction) {
-        Objects.requireNonNull(mappingFunction);
-        V v;
-        if ((v = get(key)) == null) {
-            V newValue;
-            if ((newValue = mappingFunction.apply(key)) != null) {
-                set(key,newValue);
-                return newValue;
-            }
-        }
-
-        return v;
-    }
+//    default V computeIfAbsent(K key,final int exp,
+//                              Function<? super K, ? extends V> mappingFunction) {
+//        Objects.requireNonNull(mappingFunction);
+//        V v;
+//        if ((v = get(key)) == null) {
+//
+//            V newValue;
+//
+//            if ((newValue = mappingFunction.apply(key)) != null) {
+//                set(key, exp,newValue);
+//                return newValue;
+//            }
+//        }
+//        return v;
+//    }
+//
+//    default V computeIfAbsent(K key,
+//                              Function<? super K, ? extends V> mappingFunction) {
+//        Objects.requireNonNull(mappingFunction);
+//        V v;
+//        if ((v = get(key)) == null) {
+//            V newValue;
+//            if ((newValue = mappingFunction.apply(key)) != null) {
+//                set(key,newValue);
+//                return newValue;
+//            }
+//        }
+//
+//        return v;
+//    }
 }

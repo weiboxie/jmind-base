@@ -85,23 +85,7 @@ public class RandUtil {
             return null;
     }
 
-    /**
-     * list 分页
-     *
-     * @param list
-     * @param pageNo 从0 开始
-     * @param limit
-     * @return
-     */
-    public static <T> List<T> subList(List<T> list, int pageNo, int limit) {
-        int start = pageNo * limit;
-        int end = list.size();
-        if (start < end)
-            return list.subList(start, Math.min(start + limit, end));
-        else
-            return Collections.emptyList();
 
-    }
 
     /**
      * 从list中随机选出n个

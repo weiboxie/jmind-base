@@ -1,5 +1,6 @@
 package jmind.base.util;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class CollectionUtil {
     public static <T> Object toArray(List<T> list, Class<T> clazz) {
@@ -109,6 +112,17 @@ public class CollectionUtil {
             s[i++] = l.toString();
         }
         return s;
+    }
+
+    public static <T> void  doPageTask(List<T> objs,int pageSize,Consumer<List<T>> consumer) {
+        int page=0;
+        List<T> rows1;
+        do {
+            rows1= subList(objs,++page,pageSize);
+            if(DataUtil.isEmpty(rows1))
+                return ;
+            consumer.accept(rows1);
+        }while (rows1.size()==pageSize);
     }
 
     /**

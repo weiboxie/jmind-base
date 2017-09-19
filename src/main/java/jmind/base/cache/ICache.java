@@ -64,7 +64,6 @@ public interface ICache {
                 return newValue;
             }
         }
-
         return v;
     }
 }
