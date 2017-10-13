@@ -29,6 +29,10 @@ public class ClassUtil {
         return null;
     }
 
+    public static String getProtectionDomain(Class clazz) {
+            return clazz.getProtectionDomain().toString();
+    }
+
     /**
      * 通过类名 得到实例
      * 2013-12-11 

@@ -985,32 +985,22 @@ public class ConcurrentLRUHashMap<K, V> extends AbstractMap<K, V> implements Con
         }
     }
 
-    public static void main(String[] args) {
-        ConcurrentLRUHashMap<String, String> m = new ConcurrentLRUHashMap<String, String>(60);
-        for (int i = 1; i <= 60; i++) {
-            m.put(i + "", i + "");
-
-        }
-        for (int i = 61; i <= 7; i++) {
-            m.put(i + "", i + "");
-        }
-        for (Iterator<String> it = m.keySet().iterator(); it.hasNext();) {
-            System.out.println(it.next());
-        }
-        // System.out.println(m.toString());
-        System.out.println("****************");
-
-        // for (int i = 1; i <= size; i++) {
-        // m.remove(i + "");
-        //
-        // }
-        // for (int i = 1; i <= size * 10; i++) {
-        // m.get(81 + "");
-        // m.get(82 + "");
-        // m.get(83 + "");
-        // }
-        // m.put(1 + "", 1 + "");
-        // m.put(2 + "", 3 + "");
-
-    }
+//    public static void main(String[] args) {
+//        ConcurrentLRUHashMap<String, String> m = new ConcurrentLRUHashMap<String, String>(60);
+//        for (int i = 1; i <= 60; i++) {
+//            m.put(i + "", i + "");
+//
+//        }
+//        for (int i = 61; i <= 7; i++) {
+//            m.put(i + "", i + "");
+//        }
+//        for (Iterator<String> it = m.keySet().iterator(); it.hasNext();) {
+//            System.out.println(it.next());
+//        }
+//
+//        System.out.println("****************");
+//
+//
+//
+//    }
 }

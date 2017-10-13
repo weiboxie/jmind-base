@@ -28,4 +28,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Ignore {
 
+    String name() default "";
+
 }
