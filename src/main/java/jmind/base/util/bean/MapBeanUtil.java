@@ -42,17 +42,18 @@ public class MapBeanUtil {
         for (int i = 0; i < propertyDescriptors.length; i++) {
             PropertyDescriptor descriptor = propertyDescriptors[i];
             String propertyName = descriptor.getName();
-            if (map.containsKey(propertyName)) {
                 // 下面一句可以 try 起来，这样当一个属性赋值失败的时候就不会影响其他属性赋值。
                 try {
                     Object value = map.get(propertyName);
-                    Method writeMethod = descriptor.getWriteMethod();
-                    writeMethod.setAccessible(true);
-                    writeMethod.invoke(obj, value);
+                    if(value!=null){
+                        Method writeMethod = descriptor.getWriteMethod();
+                        writeMethod.setAccessible(true);
+                        writeMethod.invoke(obj, value);
+                    }
+
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-            }
         }
         return obj;
     }
