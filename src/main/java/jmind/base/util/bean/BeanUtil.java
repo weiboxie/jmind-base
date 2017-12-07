@@ -36,14 +36,15 @@ import java.util.*;
  */
 public class BeanUtil {
 
-  private final static LoadingCache<Class<?>, List<PropertyMeta>> cache =
-      new DoubleCheckCache<Class<?>, List<PropertyMeta>>(
-      new CacheLoader<Class<?>, List<PropertyMeta>>() {
-        public List<PropertyMeta> load(Class<?> clazz) {
+  private final static LoadingCache<Class<?>, Map<String,PropertyMeta>> cache =
+      new DoubleCheckCache<Class<?>, Map<String,PropertyMeta>>(
+      new CacheLoader<Class<?>, Map<String,PropertyMeta>>() {
+        @Override
+        public Map<String,PropertyMeta> load(Class<?> clazz) {
           try {
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
             Field[] fields = clazz.getDeclaredFields();
-            TreeMap<Integer, PropertyMeta> metaMap = new TreeMap<Integer, PropertyMeta>();
+            Map<String, PropertyMeta> metaMap = new HashMap<>();
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
               Method readMethod = pd.getReadMethod();
               Method writeMethod = pd.getWriteMethod();
@@ -60,17 +61,21 @@ public class BeanUtil {
                 }
                 PropertyMeta meta = new PropertyMeta(name, type, readMethod, writeMethod,
                     methodAnnos(readMethod), methodAnnos(writeMethod), fieldAnnos(field));
-                metaMap.put(indexOfFields(field, fields), meta);
+                metaMap.put(name, meta);
               }
             }
-            return transToList(metaMap);
+            return Collections.unmodifiableMap(metaMap);
           } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
           }
         }
       });
 
-  public static List<PropertyMeta> fetchPropertyMetas(Class<?> clazz) {
+  public static Collection<PropertyMeta> fetchPropertyMetas(Class<?> clazz) {
+    return cache.get(clazz).values();
+  }
+
+  public static Map<String,PropertyMeta> getPropertyMeta(Class<?> clazz) {
     return cache.get(clazz);
   }
 
@@ -78,16 +83,7 @@ public class BeanUtil {
     return boolean.class.equals(clazz) || Boolean.class.equals(clazz);
   }
 
-  private static int indexOfFields( Field field, Field[] fields) {
-    if (field != null) {
-      for (int i = 0; i < fields.length; i++) {
-        if (field.equals(fields[i])) {
-          return i;
-        }
-      }
-    }
-    return Integer.MAX_VALUE;
-  }
+
 
 
   private static Field tryGetField(Class<?> clazz, String name) {
@@ -102,6 +98,7 @@ public class BeanUtil {
   private static Set<Annotation> methodAnnos(Method m) {
     Set<Annotation> annos = new HashSet<Annotation>();
     for (Annotation anno : m.getAnnotations()) {
+
       annos.add(anno);
     }
     return annos;
