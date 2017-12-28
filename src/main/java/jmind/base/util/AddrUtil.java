@@ -174,12 +174,12 @@ public abstract class AddrUtil {
         else {
             mac = "ABCDEFGHIJ";
         }
-        return mac.toUpperCase();
+        return mac;
     }
 
 
 
-    public static String getLocalMac()  {
+    public static final String getLocalMac()  {
         StringBuilder sb = new StringBuilder();
         try {
             //获取网卡，获取地址
@@ -201,7 +201,7 @@ public abstract class AddrUtil {
             e.printStackTrace();
         }
 
-       return sb.toString().toUpperCase();
+       return sb.toString();
     }
 
     public static void main(String[] args) {
