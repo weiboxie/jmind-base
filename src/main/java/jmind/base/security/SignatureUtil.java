@@ -75,7 +75,7 @@ public class SignatureUtil {
         char[] array = json.toCharArray();
         Arrays.sort(array);
         String sortParamJson = new String(array);
-        return MD5.md5(secretKey + sortParamJson).toLowerCase();
+        return MD5.md5(secretKey + sortParamJson);
     }
 
 }
