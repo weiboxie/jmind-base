@@ -6,18 +6,28 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 public class NIOUtil {
     private static final int BSIZE = 1024;
 
-    public static void cp(String file, String outFile) {
-        FileChannel in, out;
+    public static void copy(String file, String outFile) {
+//        FileChannel in, out;
+//        try {
+//            in = new FileInputStream(file).getChannel();
+//            out = new FileOutputStream(outFile).getChannel();
+//            in.transferTo(0, in.size(), out);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         try {
-            in = new FileInputStream(file).getChannel();
-            out = new FileOutputStream(outFile).getChannel();
-            in.transferTo(0, in.size(), out);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
+            Files.copy(Paths.get(file),new FileOutputStream(outFile));
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -30,7 +40,7 @@ public class NIOUtil {
      * @param append 是否追加
      */
     @SuppressWarnings("resource")
-    public static void write(String str, String fileName, boolean append) {
+    public static void writeToFile(String fileName, String str, boolean append) {
         FileChannel fc = null;
         try {
             fc = new FileOutputStream(fileName, append).getChannel();
@@ -51,6 +61,36 @@ public class NIOUtil {
             fc = null;
         }
 
+    }
+
+    public static Path write(String fileName, String str, boolean append){
+        try {
+          return  Files.write(Paths.get(fileName),str.getBytes(),append? StandardOpenOption.APPEND:StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null ;
+        }
+    }
+
+    public static String readAll(String filename){
+        try {
+            byte[] bytes = Files.readAllBytes(Paths.get(filename));
+            return new String(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
+
+    public static List<String> readAllLines(String filename){
+        try {
+           return Files.readAllLines(Paths.get(filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @SuppressWarnings("resource")
