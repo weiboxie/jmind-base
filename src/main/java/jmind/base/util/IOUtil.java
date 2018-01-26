@@ -185,7 +185,6 @@ public class IOUtil {
         BufferedReader br = null;
         try {
             fr = new FileReader(path);
-            System.err.println("sss==="+  fr.getEncoding());
             br = new BufferedReader(fr);
             String tmp = "";
             while ((tmp = br.readLine()) != null) {
