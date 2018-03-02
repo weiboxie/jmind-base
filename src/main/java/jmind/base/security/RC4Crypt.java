@@ -9,17 +9,17 @@ public class RC4Crypt {
     // S盒的byte数组;
     private byte[] box;
     // 明文的字符串;
-    public String plaintext;
+    private String plaintext;
     // 明文byte数组;
-    public byte[] bytePlaintext;
+    private byte[] bytePlaintext;
     // 密文结果的byte数组;
-    public byte[] result;
+    private byte[] result;
     // 输入密钥的字符串;
-    public String mainKey;
+    private String mainKey;
     // 子密钥的byte数组;
-    public byte[] subKey;
+    private byte[] subKey;
     // 本加/解密明/密的字节长度;
-    public int length;
+    private int length;
 
     // 无参数构造方法;**********************************************************
     public RC4Crypt() {
@@ -27,11 +27,15 @@ public class RC4Crypt {
         makeBox();
     }
 
-    // 用于实现明文加密的构造方法;**********************************************
-    public RC4Crypt(String a, String b) {
+    /**
+     * 用于实现明文加密的构造方法
+     * @param a 需要加密字符串
+     * @param key 秘钥
+     */
+    public RC4Crypt(String a, String key) {
         // 明文,密钥字符串参数传递;
         plaintext = a;
-        mainKey = b;
+        mainKey =key;
         // 顺序初始化S盒;
         makeBox();
         // 用明文字符串初始化明文byte数组;
@@ -48,11 +52,15 @@ public class RC4Crypt {
         }
     }
 
-    // 实现密文解密的构造方法;**************************************************
-    public RC4Crypt(byte[] a, String b) {
+    /**
+     * 解密，实现密文解密的构造方法
+     * @param a 密文
+     * @param key 秘钥
+     */
+    public RC4Crypt(byte[] a, String key) {
         // 密文byte数组,密钥字符串参数传递;
         result = a;
-        mainKey = b;
+        mainKey = key;
         // 顺序初始化S盒;
         makeBox();
         try {
@@ -95,6 +103,10 @@ public class RC4Crypt {
     // 把byte数组恢复成字符串的方法;********************************************
     public String recoverToString() {
         return new String(bytePlaintext);
+    }
+    //  获取加密byte数组
+    public byte[] getResult(){
+        return result;
     }
 
     // 获得自密钥的方法;********************************************************
@@ -149,18 +161,18 @@ public class RC4Crypt {
     }
 
     public static void main(String[] args) throws Exception {
-        //        byte[] result = new RC4Crypt("wave中文", "a2sdas1*)(fyd9").result;
-        //        byte[] str = Base64.encode(result);
-        //        System.out.println(new String(str));
-        //        String str2 = new RC4Crypt(Base64.decode(str), "a2sdas1*)(fyd9").recoverToString();
-        //        System.out.println(str2);
+                byte[] result = new RC4Crypt("wave中文", "a2sdas1*)(fyd9").result;
+                byte[] str1 = Base64.encode(result);
+                System.out.println(new String(str1));
+                String str2 = new RC4Crypt(Base64.decode(str1), "a2sdas1*)(fyd9").recoverToString();
+                System.out.println(str2);
 
-        byte[] result = new RC4Crypt("wave中文", "a2sdas1*)(fyd9").result;
+        result = new RC4Crypt("wave中文", "a2sdas1*)(fyd9").result;
         String str = new String(result, "UTF-8");
         str = URLEncoder.encode(str, "UTF-8");
         System.out.println(str);
         str = URLDecoder.decode(str, "UTF-8");
-        String str2 = new RC4Crypt(str.getBytes("UTF-8"), "a2sdas1*)(fyd9").recoverToString();
-        System.out.println(str2);
+         str = new RC4Crypt(str.getBytes("UTF-8"), "a2sdas1*)(fyd9").recoverToString();
+        System.out.println(str);
     }
 }

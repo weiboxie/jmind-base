@@ -13,6 +13,10 @@ import java.util.List;
 
 public abstract class AddrUtil {
 
+    public static String toAddressString(InetSocketAddress address) {
+        return address.getAddress().getHostAddress() + ":" + address.getPort();
+    }
+
     public static List<InetSocketAddress> getAddress(String s) {
         if (DataUtil.isEmpty(s))
             return Collections.emptyList();

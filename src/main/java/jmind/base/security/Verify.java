@@ -59,7 +59,7 @@ public class Verify {
     public static String encodeRC(String source) {
         String code = source;
         try {
-            final byte[] result = new RC4Crypt(code, KEY).result;
+            final byte[] result = new RC4Crypt(code, KEY).getResult();
             code = new String(Base64.encode(result), GlobalConstants.UTF8);
             code = URLEncoder.encode(code, GlobalConstants.UTF8);
         } catch (Exception e) {
