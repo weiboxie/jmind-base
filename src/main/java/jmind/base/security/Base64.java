@@ -1,5 +1,9 @@
 package jmind.base.security;
 
+import jmind.base.util.GlobalConstants;
+
+import java.io.UnsupportedEncodingException;
+
 /**
  * Here is class description
  * User: Real
@@ -16,6 +20,32 @@ public final class Base64 {
             (byte) 'y', (byte) 'z', (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
             (byte) '7', (byte) '8', (byte) '9', (byte) '+', (byte) '/' };
 
+
+
+    // 编码
+    public static String encodeString(String s) {
+        if (s == null)
+            return null;
+        String code = null;
+        try {
+            code = new String(encode(s.getBytes()), GlobalConstants.UTF8);
+        } catch (UnsupportedEncodingException e) {
+            code = new String(encode(s.getBytes()));
+        }
+        return code;
+    }
+
+    //		 将 BASE64 编码的字符串 s 进行解码
+    public static String decoderString(String s) {
+        if (s == null)
+            return null;
+        try {
+            byte[] b = decode(s);
+            return new String(b,GlobalConstants.UTF8);
+        } catch (Exception e) {
+            return null;
+        }
+    }
     /**
      * encode the input data producong a base 64 encoded byte array.
      *
