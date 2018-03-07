@@ -177,7 +177,7 @@ public abstract class AddrUtil {
         }
 
         if (!DataUtil.isEmpty(mac)) {
-            mac = mac.replace("-", "");
+            mac = mac.replace("-", "").replace(":","");
         }
 
         return mac;
