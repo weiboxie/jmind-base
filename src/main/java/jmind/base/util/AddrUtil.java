@@ -10,8 +10,12 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class AddrUtil {
+
+    public static  volatile  String mac;
 
     public static String toAddressString(InetSocketAddress address) {
         return address.getAddress().getHostAddress() + ":" + address.getPort();
@@ -36,19 +40,19 @@ public abstract class AddrUtil {
     public static String getOSName() {
         return System.getProperty("os.name").toLowerCase();
     }
-
+    private static final String[] linuxCommand = { "/sbin/ifconfig", "-a" };
     /**
      * 获取unix网卡的mac地址. 非windows的系统默认调用本方法获取. 如果有特殊系统请继续扩充新的取mac地址方法.
      *
      * @return mac地址
      */
-    private static String getUnixMACAddress() {
+    public static String getUnixMACAddress() {
         String mac = null;
         BufferedReader bufferedReader = null;
         Process process = null;
         try {
             // linux下的命令，一般取eth0作为本地主网卡
-            process = Runtime.getRuntime().exec("ifconfig eth0");
+            process = Runtime.getRuntime().exec(linuxCommand);
             // 显示信息中包含有mac地址信息
             bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line = null;
@@ -64,7 +68,8 @@ public abstract class AddrUtil {
             }
         }
         catch (IOException e) {
-            System.out.println("unix/linux方式未获取到网卡地址");
+            e.printStackTrace();
+            System.err.println("unix/linux方式未获取到网卡地址");
         }
         finally {
             try {
@@ -155,57 +160,51 @@ public abstract class AddrUtil {
 
     /**
      * 获取MAC地址
-     *
-     * @param argc
-     *            运行参数.
      * @throws Exception
      */
     public static String getMACAddress() {
-        // windows
-        String mac = getWindowsMACAddress();
+        // unix
+        if (DataUtil.isEmpty(mac)) {
+            mac = getUnixMACAddress();
+        }
         // windows7
         if (DataUtil.isEmpty(mac)) {
             mac = getWindows7MACAddress();
         }
-        // unix
-        if (DataUtil.isEmpty(mac)) {
-            mac = getUnixMACAddress();
+        // windows
+        if(DataUtil.isEmpty(mac)){
+           mac= getWindowsMACAddress();
         }
 
         if (!DataUtil.isEmpty(mac)) {
             mac = mac.replace("-", "");
         }
-        else {
-            mac = "ABCDEFGHIJ";
-        }
+
         return mac;
     }
 
 
 
     public static final String getLocalMac()  {
-        StringBuilder sb = new StringBuilder();
-        try {
-            //获取网卡，获取地址
-            byte[] mac    = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
-            for(int i=0; i<mac.length; i++) {
-//                if(i!=0) {
-//                    sb.append("-");
-//                }
-                //字节转换为整数
-                int temp = mac[i]&0xff;
-                String str = Integer.toHexString(temp);
-                if(str.length()==1) {
-                    sb.append("0"+str);
-                }else {
-                    sb.append(str);
+        String mac = "";
+        try
+        {
+            Process p = new ProcessBuilder("ifconfig").start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                Pattern pat = Pattern.compile("\\b\\w+:\\w+:\\w+:\\w+:\\w+:\\w+\\b");
+                Matcher mat= pat.matcher(line);
+                if(mat.find())
+                {
+                    mac=mat.group(0);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            br.close();
         }
-
-       return sb.toString();
+        catch (IOException e) {}
+        return mac;
     }
 
     public static void main(String[] args) {

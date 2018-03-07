@@ -16,6 +16,13 @@ import javax.xml.stream.XMLStreamReader;
  *
  */
 public abstract class XMLUtils {
+    /**
+     * 生成xml
+     * @param t
+     * @param isXmlFlagment 是否xml部分，fasle 会包含xml标签头
+     * @param <T>
+     * @return
+     */
     public static <T> String toXML(T t, boolean isXmlFlagment) {
         JAXBContext jaxbContext;
         try {
@@ -29,6 +36,11 @@ public abstract class XMLUtils {
             throw new RuntimeException("Can't marshall to xml.", e);
         }
     }
+
+    /**
+     * xml文件配置转换为对象
+   */
+
 
     public static <T> T fromXML(Class<T> t, String xml) {
         JAXBContext jaxbContext;
