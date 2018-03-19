@@ -43,7 +43,7 @@ public class BeanUtil {
         public Map<String,PropertyMeta> load(Class<?> clazz) {
           try {
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-            Field[] fields = clazz.getDeclaredFields();
+           // Field[] fields = clazz.getDeclaredFields();
             Map<String, PropertyMeta> metaMap = new HashMap<>();
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
               Method readMethod = pd.getReadMethod();
@@ -87,11 +87,15 @@ public class BeanUtil {
 
 
   private static Field tryGetField(Class<?> clazz, String name) {
+    if(clazz==null || Object.class.equals(clazz)){
+      return null;
+    }
     try {
-      return clazz.getDeclaredField(name);
+      Field field = clazz.getDeclaredField(name);
+      return  field;
     } catch (Exception e) {
       // ignore
-      return null;
+      return tryGetField(clazz.getSuperclass(),name);
     }
   }
 
