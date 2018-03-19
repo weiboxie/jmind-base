@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ *  yyyy-MM-dd HH:mm:ss.S z  2007-08-24 08:00:00.0 CST
+ */
 public class DateUtil {
 
     public static final long MINUTE = 60000;

@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * xml 处理
  * @author xieweibo
- *
+ * 详解：http://blog.csdn.net/yellowd1/article/details/49538995
  */
 public abstract class XMLUtils {
     /**
@@ -33,6 +33,7 @@ public abstract class XMLUtils {
             jaxbMarshaller.marshal(t, sw);
             return sw.toString();
         } catch (JAXBException e) {
+            System.err.println("parse xml err xml="+t.toString());
             throw new RuntimeException("Can't marshall to xml.", e);
         }
     }
@@ -52,6 +53,7 @@ public abstract class XMLUtils {
             XMLStreamReader xsr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
             return jaxbUnmarshaller.unmarshal(xsr, t).getValue();
         } catch (Exception e) {
+            System.err.println("Can't unmarshall to xml="+xml);
             throw new RuntimeException("Can't unmarshall to xml.", e);
         }
     }
