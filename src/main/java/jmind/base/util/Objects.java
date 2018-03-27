@@ -17,9 +17,8 @@
 package jmind.base.util;
 
 
-import java.util.Collection;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * @author xieweibo
@@ -37,15 +36,24 @@ public class Objects {
   public static String toString(Object object){
     if(object==null){
       return DataUtil.EMPTY;
-    }
-    if(object instanceof Date){
+    }else if(object instanceof Date){
       return Long.toString(((Date) object).getTime());
+    }else if(object instanceof byte[]){
+      return byte2String((byte[]) object);
     }
     return object.toString();
   }
 
-  public static byte[] toByte(Object object){
+  public static byte[] toBytes(Object object){
      return toString(object).getBytes();
+  }
+
+  public static String byte2String(byte[] bytes){
+    try {
+      return new String(bytes,"UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      return  new String(bytes);
+    }
   }
 
 }
