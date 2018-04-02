@@ -55,10 +55,14 @@ public abstract class RequestUtil {
         return false;
     }
 
-    public static TreeMap<String, String> getParamterMap(final String param) {
+    public static TreeMap<String, String> getParameterMap(String param) {
         TreeMap<String, String> m = new TreeMap<String, String>();
         if (DataUtil.isEmpty(param))
             return m;
+        int i=param.indexOf("?");
+        if(i>0){
+            param=param.substring(i+1);
+        }
         String[] split = param.split("&");
         for (String s : split) {
             String[] ss = s.split("=");
