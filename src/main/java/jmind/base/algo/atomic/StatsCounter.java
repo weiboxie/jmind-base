@@ -166,7 +166,8 @@ public class StatsCounter {
         }
 
         public String toString() {
-            Map<String, Number> map = new LinkedHashMap<String, Number>();
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("key",key);
             map.put("successCount", successCount);
             map.put("successAvg", (double) totalSuccessTime / successCount);
             map.put("exceptionCount", exceptionCount);
