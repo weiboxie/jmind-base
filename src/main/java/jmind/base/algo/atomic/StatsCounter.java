@@ -20,10 +20,10 @@ public class StatsCounter {
         long t = System.currentTimeMillis() - startTime;
         totaSuccessTime.add(t);
         if (min > t && t > 0) {
-            min = t;
+            min = Math.min(min,t);
         }
         if (max < t) {
-            max = t;
+            max = Math.max(max,t);
         }
         if (t > slowTime) {
             slowCount.increment();
