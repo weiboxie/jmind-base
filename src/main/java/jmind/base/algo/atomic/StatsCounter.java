@@ -19,15 +19,16 @@ public class StatsCounter {
         successCount.increment();
         long t = System.currentTimeMillis() - startTime;
         totaSuccessTime.add(t);
+        if (t > slowTime) {
+            slowCount.increment();
+        }
         if (min > t && t > 0) {
             min = Math.min(min,t);
         }
         if (max < t) {
             max = Math.max(max,t);
         }
-        if (t > slowTime) {
-            slowCount.increment();
-        }
+
     }
 
     public void recordException(long startTime) {
