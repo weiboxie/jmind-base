@@ -1,16 +1,8 @@
 package jmind.base.util;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class CollectionUtil {
     public static <T> Object toArray(List<T> list, Class<T> clazz) {
