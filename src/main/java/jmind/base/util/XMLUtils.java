@@ -50,6 +50,7 @@ public abstract class XMLUtils {
             marshaller.setProperty(Marshaller.JAXB_ENCODING, GlobalConstants.UTF8);
             //设置格式化输出
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
             StringWriter sw = new StringWriter();
             marshaller.marshal(t, sw);
             return sw.toString();
