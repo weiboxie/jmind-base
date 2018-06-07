@@ -1,6 +1,5 @@
 package jmind.base.cache;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;

@@ -1,7 +1,8 @@
 package jmind.base.util;
 
-import java.io.StringReader;
-import java.io.StringWriter;
+import jmind.base.cache.CacheLoader;
+import jmind.base.cache.DoubleCheckCache;
+import jmind.base.cache.LoadingCache;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -9,13 +10,30 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 /**
- * xml 处理
+ * xml 处理 @XmlRootElement
  * @author xieweibo
  * 详解：http://blog.csdn.net/yellowd1/article/details/49538995
+ * https://blog.csdn.net/top_code/article/details/51660191
  */
+
 public abstract class XMLUtils {
+
+    private final static LoadingCache<Class<?>, JAXBContext> cache =
+            new DoubleCheckCache<Class<?>, JAXBContext>(
+                    new CacheLoader<Class<?>, JAXBContext>() {
+                        @Override
+                        public JAXBContext load(Class<?> clazz)  {
+                            try {
+                                return JAXBContext.newInstance(clazz);
+                            } catch (JAXBException e) {
+                                throw new RuntimeException(e.getMessage(), e);
+                            }
+                        }
+                    });
     /**
      * 生成xml
      * @param t
@@ -24,13 +42,16 @@ public abstract class XMLUtils {
      * @return
      */
     public static <T> String toXML(T t, boolean isXmlFlagment) {
-        JAXBContext jaxbContext;
         try {
-            jaxbContext = JAXBContext.newInstance(t.getClass());
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, isXmlFlagment);
+            JAXBContext jaxbContext = cache.get(t.getClass());
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FRAGMENT, isXmlFlagment);
+            //设置序列化的编码格式
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, GlobalConstants.UTF8);
+            //设置格式化输出
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             StringWriter sw = new StringWriter();
-            jaxbMarshaller.marshal(t, sw);
+            marshaller.marshal(t, sw);
             return sw.toString();
         } catch (JAXBException e) {
             System.err.println("parse xml err xml="+t.toString());
@@ -44,11 +65,12 @@ public abstract class XMLUtils {
 
 
     public static <T> T fromXML(Class<T> t, String xml) {
-        JAXBContext jaxbContext;
+
         try {
-            jaxbContext = JAXBContext.newInstance(t);
+            JAXBContext jaxbContext = cache.get(t);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             //jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, isXmlFlagment);
+
             StringReader sr = new StringReader(xml);
             XMLStreamReader xsr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
             return jaxbUnmarshaller.unmarshal(xsr, t).getValue();
