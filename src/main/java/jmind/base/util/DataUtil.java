@@ -75,13 +75,13 @@ public abstract class DataUtil {
         return "%" + s.trim() + "%";
     }
 
-    public static String LeftLikeParam(String s) {
+    public static String leftLikeParam(String s) {
         if (isEmpty(s))
             return null;
         return "%"+s.trim() ;
     }
 
-    public static String RightLikeParam(String s) {
+    public static String rightLikeParam(String s) {
         if (isEmpty(s))
             return null;
         return s.trim() + "%";
