@@ -22,8 +22,7 @@ public class TaskExecutor {
     //Executors.newFixedThreadPool(nThreads)
 
     // private static final ExecutorService executor = Executors.newCachedThreadPool();
-    private final ExecutorService executor = Executors
-            .newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+    private final ExecutorService executor = Executors.newFixedThreadPool(Math.min(Runtime.getRuntime().availableProcessors() * 2,16));
     //  单线程  
     private final ExecutorService simpleExe = Executors.newSingleThreadExecutor();
 

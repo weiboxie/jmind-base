@@ -157,8 +157,7 @@ public class NIOUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String file = read("/data/a.txt");
-        System.out.println(file);
+        writeToFile("a.txt","ssss",false);
 
     }
 }
