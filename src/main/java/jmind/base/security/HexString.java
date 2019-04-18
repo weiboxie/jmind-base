@@ -37,6 +37,10 @@ public class HexString {
      * @return
      */
     public static String hexToStr(String hexStr) {
+        return new String(hexToByte(hexStr));
+    }
+
+    public static byte[] hexToByte(String hexStr) {
         char[] hexs = hexStr.toCharArray();
         byte[] bytes = new byte[hexStr.length() / 2];
         int n;
@@ -45,7 +49,7 @@ public class HexString {
             n += chars.indexOf(hexs[2 * i + 1]);
             bytes[i] = (byte) (n & 0xff);
         }
-        return new String(bytes);
+        return bytes;
     }
 
     /**
