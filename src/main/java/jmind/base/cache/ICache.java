@@ -1,6 +1,7 @@
 package jmind.base.cache;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -29,6 +30,8 @@ public interface ICache {
     public boolean set(String key, int seconds, Object value);
 
     public boolean delete(String key);
+
+    public boolean mdelete(List<String> keys);
 
     public <T> T get(String key);
 
