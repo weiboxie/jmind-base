@@ -18,6 +18,9 @@ public class RegexUtil {
     }
 
     public static final boolean matcher(String regex, String value) {
+        if(DataUtil.isEmpty(value)){
+            return false;
+        }
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         return  matcher.matches();
