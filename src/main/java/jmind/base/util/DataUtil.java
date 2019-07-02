@@ -88,9 +88,14 @@ public abstract class DataUtil {
     }
 
     public static String emptyToNull(String s) {
-        if (s == null || s.isEmpty())
+        if (s == null || s.isEmpty()) {
             return null;
+        }
         return s;
+    }
+
+    public static String nullToEmpty(String s) {
+        return s==null?EMPTY:s;
     }
 
     public static <E> Collection<E> addNotHas(Collection<E> source, Collection<E> target) {
