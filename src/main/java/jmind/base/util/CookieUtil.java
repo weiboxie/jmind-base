@@ -150,8 +150,9 @@ public class CookieUtil {
         }
         String[] str = url.split("\\.");
         int len = str.length;
-        if (len > 2)
+        if (len > 2) {
             return str[len - 2] + "." + str[len - 1];
+        }
         return url;
     }
 
