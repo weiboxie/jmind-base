@@ -9,6 +9,9 @@ public class RegexUtil {
     private static final String regEmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w]{2,4}$";
     private static final String regMobile = "^1(3|4|5|7|8)\\d{9}$";
     private static final String regEnglish="^[a-zA-Z]+" ;
+    private static final String regNumber="^\\d+$" ;
+    // 数字字母下划线
+    public static final String regW="^\\w*$" ;
     public static boolean isEmail(String email) {
         return matcher(regEmail, email);
     }
@@ -44,5 +47,13 @@ public class RegexUtil {
         return matcher(GlobalConstants.CHINESE_REGEX,str);
 
     }
+
+
+    public static boolean isNumber(String str){
+        return matcher(regNumber,str);
+
+    }
+
+
 
 }
