@@ -63,9 +63,20 @@ public class NIOUtil {
 
     }
 
+    /**
+     * https://www.iteye.com/blog/cucaracha-2041847
+     * @param fileName 文件名
+     * @param str
+     * @param append  是否追加
+     * @return
+     */
     public static Path write(String fileName, String str, boolean append){
         try {
-          return  Files.write(Paths.get(fileName),str.getBytes(),append? StandardOpenOption.APPEND:StandardOpenOption.WRITE);
+            if(append){
+                return  Files.write(Paths.get(fileName),str.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.APPEND);
+            }else{
+                return  Files.write(Paths.get(fileName),str.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null ;
