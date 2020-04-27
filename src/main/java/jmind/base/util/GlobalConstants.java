@@ -19,6 +19,8 @@ public class GlobalConstants {
     public static final String HYPHEN = "-";
     //分隔符
     public static final String DELIM = "&";
+    // 竖杆
+    public static final String MONTANT="|" ;
 
     // 下划线
     public static final String DASH = "_";
