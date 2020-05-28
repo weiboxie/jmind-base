@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -119,12 +120,17 @@ public abstract class DataUtil {
     }
 
     public static String join(final String separator, Object... list) {
-        StringBuilder sb = new StringBuilder(list[0].toString());
+        if(list==null || list.length==0){
+            return EMPTY;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(list[0]);
         for (int i = 1; i < list.length; i++) {
             sb.append(separator).append(list[i]);
         }
         return sb.toString();
     }
+
 
     public static boolean matcher(String regex, String value) {
         Pattern pattern = Pattern.compile(regex);
