@@ -10,6 +10,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -18,6 +19,8 @@ import java.io.StringWriter;
  * @author xieweibo
  * 详解：http://blog.csdn.net/yellowd1/article/details/49538995
  * https://blog.csdn.net/top_code/article/details/51660191
+ * 安全问题
+ * https://yuque.antfin-inc.com/alccih/armc/java_xxe
  */
 
 public abstract class XMLUtils {
@@ -54,7 +57,7 @@ public abstract class XMLUtils {
             StringWriter sw = new StringWriter();
             marshaller.marshal(t, sw);
             return sw.toString();
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             System.err.println("parse xml err xml="+t.toString());
             throw new RuntimeException("Can't marshall to xml.", e);
         }
@@ -69,11 +72,15 @@ public abstract class XMLUtils {
 
         try {
             JAXBContext jaxbContext = cache.get(t);
+            XMLInputFactory xif = XMLInputFactory.newFactory();
+            xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             //jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, isXmlFlagment);
 
             StringReader sr = new StringReader(xml);
-            XMLStreamReader xsr = XMLInputFactory.newInstance().createXMLStreamReader(sr);
+            XMLStreamReader xsr = xif.createXMLStreamReader(sr);
             return jaxbUnmarshaller.unmarshal(xsr, t).getValue();
         } catch (Exception e) {
             System.err.println("Can't unmarshall to xml="+xml);
