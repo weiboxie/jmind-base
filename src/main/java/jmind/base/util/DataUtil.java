@@ -95,6 +95,32 @@ public abstract class DataUtil {
         return s;
     }
 
+    /**
+     * 去掉换行符
+     * @param str
+     * @return
+     */
+    public static String  removeLF(String str){
+        if(isEmpty(str)){
+            return str;
+        }
+       return str.replaceAll("[\\t\\n\\r]","").trim();
+    }
+
+    /**
+     * 去掉空格，包含换行符
+     * 可以匹配空格、制表符、换页符等空白字符的其中任意一个
+     * @param str
+     * @return
+     */
+    public static String  removeBlank(String str){
+        if(isEmpty(str)){
+            return str;
+        }
+        return str.replaceAll("\\s","");
+
+    }
+
     public static String nullToEmpty(String s) {
         return s==null?EMPTY:s;
     }
