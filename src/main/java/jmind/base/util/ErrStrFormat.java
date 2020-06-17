@@ -13,7 +13,7 @@ public class ErrStrFormat {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            errStr.append(sw.toString().replace("\r","").replace("\n",""));
+            errStr.append(DataUtil.removeLF(sw.toString()));
             pw.close();
             sw.close();
         } catch (Exception e2) {
