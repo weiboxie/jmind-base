@@ -238,21 +238,6 @@ public class IOUtil {
         return sb;
     }
 
-    public static void execult(String url) {
-        try {
-            String cmd = "wget --timeout=25 " + url + " -O  /root/a.txt";
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void sh(String cmd) {
-        try {
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

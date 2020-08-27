@@ -1,4 +1,4 @@
-package jmind.base.security;
+ package jmind.base.security;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
