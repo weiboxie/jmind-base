@@ -6,7 +6,7 @@ package jmind.base.security;
 public class HexString {
 
     static final String chars = "0123456789ABCDEF";
-    static final char[] hexs=chars.toCharArray();
+    static final char[] hexs = chars.toCharArray();
     /**
      * 字符串转换成为16进制(无需Unicode编码)
      * @param str
@@ -14,12 +14,16 @@ public class HexString {
      */
     /**
      * 字符串转换成为16进制(无需Unicode编码)
+     *
      * @param str
      * @return
      */
     public static String toHex(String str) {
+        return toHex(str.getBytes());
+    }
+
+    public static String toHex(byte[] bs) {
         StringBuilder sb = new StringBuilder();
-        byte[] bs = str.getBytes();
         int bit;
         for (int i = 0; i < bs.length; i++) {
             bit = (bs[i] & 0x0f0) >> 4;
@@ -33,6 +37,7 @@ public class HexString {
 
     /**
      * 16进制直接转换成为字符串(无需Unicode解码)
+     *
      * @param hexStr
      * @return
      */
@@ -56,14 +61,14 @@ public class HexString {
      * 字符串转换UNICODE
      */
     public static String toUnicode(String string) {
-StringBuffer unicode = new StringBuffer();
-for (int i = 0; i < string.length(); i++) {
+        StringBuffer unicode = new StringBuffer();
+        for (int i = 0; i < string.length(); i++) {
 // 取出每一个字符
             char c = string.charAt(i);
             // 转换为unicode
             unicode.append("\\u" + Integer.toHexString(c));
-}
-return unicode.toString();
+        }
+        return unicode.toString();
     }
 
     /**
@@ -82,11 +87,11 @@ return unicode.toString();
     }
 
     public static void main(String[] args) {
-        String source="wavez中文" ;
-        String hex=toHex(source);
+        String source = "wavez中文";
+        String hex = toHex(source);
         System.err.println(hex);
         System.err.println(hexToStr(hex));
-        hex=toUnicode(source);
+        hex = toUnicode(source);
         System.err.println(hex);
         System.err.println(unicodeToStr(hex));
     }
