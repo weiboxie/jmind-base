@@ -79,7 +79,8 @@ public class DateUtil {
         calendar.set(Calendar.HOUR_OF_DAY,23);
         calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND,59);
-        calendar.set(Calendar.MILLISECOND,999);
+        //  这里应该是 999 ，但是mysql 到 500 就成第二天了，所以改成499
+        calendar.set(Calendar.MILLISECOND,499);
         return calendar.getTime();
     }
 
@@ -115,7 +116,7 @@ public class DateUtil {
         }
         calendar.add(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        calendar.set(Calendar.MILLISECOND,999);
+        calendar.set(Calendar.MILLISECOND,499);
         calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND,59);
         calendar.set(Calendar.HOUR_OF_DAY,23);
