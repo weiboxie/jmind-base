@@ -1,7 +1,7 @@
 package jmind.base.util;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.util.Enumeration;
 
 public abstract class Host {
 
@@ -37,6 +37,25 @@ public abstract class Host {
 
     public static String getHostIp() {
         return _host.getHostAddress();
+//        if (_host.isLoopbackAddress()) {
+//            // find the first IPv4 Address that not loopback
+//            Enumeration<NetworkInterface> interfaces = null;
+//            try {
+//                interfaces = NetworkInterface.getNetworkInterfaces();
+//            } catch (SocketException e) {
+//                e.printStackTrace();
+//            }
+//            while (interfaces.hasMoreElements()) {
+//                NetworkInterface in = interfaces.nextElement();
+//                Enumeration<InetAddress> addrs = in.getInetAddresses();
+//                while (addrs.hasMoreElements()) {
+//                    InetAddress address = addrs.nextElement();
+//                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+//                        ip = address.getHostAddress();
+//                    }
+//                }
+//            }
+//        }
     }
 
 }
