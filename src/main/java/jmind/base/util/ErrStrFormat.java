@@ -22,12 +22,34 @@ public class ErrStrFormat {
         return errStr.toString();
     }
 
-    public static void main(String[] args){
-        int i =9;
-        try{
-            int k = i/0;
-        }catch(Exception e){
-            System.out.print("::"+getErrStr(e));
+    /**
+     * 获取当前堆栈信息
+     * @return
+     */
+    public static String getCurrentStackTrace() {
+        StackTraceElement[] st = Thread.currentThread().getStackTrace();
+        StringBuffer sbf = new StringBuffer();
+        if (st != null) {
+            for (StackTraceElement e : st) {
+                if (sbf.length() > 0) {
+                    sbf.append(" <- ");
+                    sbf.append(System.getProperty("line.separator"));
+                }
+                sbf.append(java.text.MessageFormat.format("{0}.{1}() {2}"
+                        , e.getClassName()
+                        , e.getMethodName()
+                        , e.getLineNumber()));
+            }
+        }
+        return sbf.toString();
+    }
+
+    public static void main(String[] args) {
+        int i = 9;
+        try {
+            int k = i / 0;
+        } catch (Exception e) {
+            System.out.print("::" + getErrStr(e));
         }
 
     }
