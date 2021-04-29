@@ -328,4 +328,9 @@ public class DateUtil {
         }
     }
 
+    public static String formatInternationalDate(Date date,String tz,String format){
+        SimpleDateFormat bjSdf = new SimpleDateFormat(format);
+        bjSdf.setTimeZone(TimeZone.getTimeZone(tz));
+        return bjSdf.format(date);
+    }
 }
