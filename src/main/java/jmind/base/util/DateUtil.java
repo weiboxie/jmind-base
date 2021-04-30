@@ -328,9 +328,20 @@ public class DateUtil {
         }
     }
 
+    // jmind.base.util.DateUtil.formatInternationalDate(new Date(),"America/New_York","yyyy-MM-dd HH:mm:ss")
+
+    /**
+     *
+     * @param date
+     * @param tz 对应时区
+     * @param format
+     * @return
+     */
     public static String formatInternationalDate(Date date,String tz,String format){
         SimpleDateFormat bjSdf = new SimpleDateFormat(format);
         bjSdf.setTimeZone(TimeZone.getTimeZone(tz));
         return bjSdf.format(date);
     }
+
+
 }
