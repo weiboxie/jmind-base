@@ -35,11 +35,19 @@ public interface ICache {
 
     public <T> T get(String key);
 
-    public  Map<String, ?> getMulti(Collection<String> keys);
+    public  Map<String, Object> getMulti(Collection<String> keys);
 
     public Object getCache();
 
     public void clear();
+
+    default  <T> T getObject(String key, Class<T> clazz){
+        return get(key);
+    }
+
+    default Map<String, Object> getObjects(Collection<String> keys, Class clazz){
+        return getMulti(keys);
+    }
 
     default <V> V computeIfAbsent(String key,final int exp,
                               Function<String, ? extends V> mappingFunction) {

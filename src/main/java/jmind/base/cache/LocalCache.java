@@ -50,7 +50,7 @@ public class LocalCache implements ICache {
     }
 
     @Override
-    public Map<String, ?> getMulti(Collection<String> keys) {
+    public Map<String, Object> getMulti(Collection<String> keys) {
         Map<String, Object> map = new HashMap<>();
         for (String key : keys) {
             Object value = get(key);

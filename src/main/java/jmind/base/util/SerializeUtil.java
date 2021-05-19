@@ -45,7 +45,7 @@ public class SerializeUtil {
      * @param bytes
      * @return
      */
-    public static Object unserialize(byte[] bytes) {
+    public static Object deserialize(byte[] bytes) {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = null;
         try {
@@ -58,6 +58,7 @@ public class SerializeUtil {
         } finally {
             try {
                 ois.close();
+                bais.close();
             } catch (Exception e) {
             }
         }
