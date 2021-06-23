@@ -33,35 +33,7 @@ public class NIOUtil {
 
     }
 
-    /**
-     * 
-     * @param str
-     * @param fileName
-     * @param append 是否追加
-     */
-    @SuppressWarnings("resource")
-    public static void writeToFile(String fileName, String str, boolean append) {
-        FileChannel fc = null;
-        try {
-            fc = new FileOutputStream(fileName, append).getChannel();
-            ByteBuffer bb = ByteBuffer.allocate(BSIZE);
-            bb.put(str.getBytes("UTF-8"));
-            bb.flip();
-            fc.write(bb);
-        } catch (Exception e) {
 
-        } finally {
-            if (fc != null)
-                try {
-                    fc.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            fc = null;
-        }
-
-    }
 
     /**
      * https://www.iteye.com/blog/cucaracha-2041847
@@ -167,8 +139,5 @@ public class NIOUtil {
         foChannel = null;
     }
 
-    public static void main(String[] args) throws Exception {
-        writeToFile("a.txt","ssss",false);
 
-    }
 }
