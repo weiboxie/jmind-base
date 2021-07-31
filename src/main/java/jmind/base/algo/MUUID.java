@@ -368,10 +368,11 @@ public class MUUID implements Comparable<MUUID>, java.io.Serializable {
             // Since static var belong to class loader there could be collisions otherwise
             final int processPiece;
             {
-                int processId = new java.util.Random().nextInt();
+                int processId ;
                 try {
                     processId = java.lang.management.ManagementFactory.getRuntimeMXBean().getName().hashCode();
                 } catch (Throwable t) {
+                    processId = new Random().nextInt();
                 }
 
                 ClassLoader loader = MUUID.class.getClassLoader();

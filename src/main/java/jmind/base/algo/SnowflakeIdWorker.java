@@ -2,7 +2,15 @@ package jmind.base.algo;
 
 /**
  * Created by xieweibo on 2017/2/17.
+ * 雪花算法-分布式id算法
+ * https://www.yuque.com/renyong-jmovm/ds/lgz2xv
  */
+
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.logging.Level;
+
 /**
  * Twitter_Snowflake<br>
  * SnowFlake的结构如下(每部分用-分开):<br>
@@ -77,6 +85,8 @@ public class SnowflakeIdWorker {
         this.datacenterId = datacenterId;
     }
 
+
+
     // ==============================Methods==========================================
     /**
      * 获得下一个ID (该方法是线程安全的)
@@ -138,12 +148,12 @@ public class SnowflakeIdWorker {
 
     //==============================Test=============================================
     /** 测试 */
-    public static void main(String[] args) {
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 1000; i++) {
-            long id = idWorker.nextId();
-            System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
-        }
-    }
+//    public static void main(String[] args) {
+//        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
+//        for (int i = 0; i < 1000; i++) {
+//            long id = idWorker.nextId();
+//            System.out.println(Long.toBinaryString(id));
+//            System.out.println(id);
+//        }
+//    }
 }
