@@ -58,7 +58,7 @@ public @interface CacheMonitor {
      * 2013-10-23 
      * @return
      */
-    String spel() default "";
+    String key() default "";
 
     ICache.Type type() default ICache.Type.GUAVA;
 

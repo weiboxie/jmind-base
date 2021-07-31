@@ -33,39 +33,22 @@ public class NIOUtil {
 
     }
 
+
+
     /**
-     * 
+     * https://www.iteye.com/blog/cucaracha-2041847
+     * @param fileName 文件名
      * @param str
-     * @param fileName
-     * @param append 是否追加
+     * @param append  是否追加
+     * @return
      */
-    @SuppressWarnings("resource")
-    public static void writeToFile(String fileName, String str, boolean append) {
-        FileChannel fc = null;
-        try {
-            fc = new FileOutputStream(fileName, append).getChannel();
-            ByteBuffer bb = ByteBuffer.allocate(BSIZE);
-            bb.put(str.getBytes("UTF-8"));
-            bb.flip();
-            fc.write(bb);
-        } catch (Exception e) {
-
-        } finally {
-            if (fc != null)
-                try {
-                    fc.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            fc = null;
-        }
-
-    }
-
     public static Path write(String fileName, String str, boolean append){
         try {
-          return  Files.write(Paths.get(fileName),str.getBytes(),append? StandardOpenOption.APPEND:StandardOpenOption.WRITE);
+            if(append){
+                return  Files.write(Paths.get(fileName),str.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.APPEND);
+            }else{
+                return  Files.write(Paths.get(fileName),str.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null ;
@@ -156,9 +139,5 @@ public class NIOUtil {
         foChannel = null;
     }
 
-    public static void main(String[] args) throws Exception {
-        String file = read("/data/a.txt");
-        System.out.println(file);
 
-    }
 }

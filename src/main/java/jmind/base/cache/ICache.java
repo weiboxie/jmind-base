@@ -1,7 +1,7 @@
 package jmind.base.cache;
 
-import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -31,39 +31,59 @@ public interface ICache {
 
     public boolean delete(String key);
 
+    public boolean mdelete(List<String> keys);
+
     public <T> T get(String key);
 
-    public  Map<String, ?> getMulti(Collection<String> keys);
+    public  Map<String, Object> getMulti(Collection<String> keys);
 
     public Object getCache();
 
     public void clear();
 
+    default  <T> T getObject(String key, Class<T> clazz){
+        return get(key);
+    }
+
+    default Map<String, Object> getObjects(Collection<String> keys, Class clazz){
+        return getMulti(keys);
+    }
+
     default <V> V computeIfAbsent(String key,final int exp,
                               Function<String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
-        V v;
-        if ((v = get(key)) == null) {
-            V newValue;
-            if ((newValue = mappingFunction.apply(key)) != null) {
-                set(key, exp,newValue);
-                return newValue;
-            }
-        }
-        return v;
+      try {
+          V v;
+          if ((v = get(key)) == null) {
+              V newValue;
+              if ((newValue = mappingFunction.apply(key)) != null) {
+                  set(key, exp,newValue);
+                  return newValue;
+              }
+          }
+          return v;
+      }catch (Exception e){
+          e.printStackTrace();
+          return mappingFunction.apply(key);
+      }
     }
 
     default <V> V computeIfAbsent(String key,
                               Function<? super String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
-        V v;
-        if ((v = get(key)) == null) {
-            V newValue;
-            if ((newValue = mappingFunction.apply(key)) != null) {
-                set(key,newValue);
-                return newValue;
+        try{
+            V v;
+            if ((v = get(key)) == null) {
+                V newValue;
+                if ((newValue = mappingFunction.apply(key)) != null) {
+                    set(key,newValue);
+                    return newValue;
+                }
             }
+            return v;
+        }catch (Exception e){
+            e.printStackTrace();
+            return mappingFunction.apply(key);
         }
-        return v;
     }
 }

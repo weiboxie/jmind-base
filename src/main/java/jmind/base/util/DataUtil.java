@@ -3,6 +3,8 @@ package jmind.base.util;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,21 +71,58 @@ public abstract class DataUtil {
     }
 
     public static String likeParam(String s) {
-        if (s == null || s.trim().isEmpty())
+        if (isEmpty(s))
             return null;
         return "%" + s.trim() + "%";
     }
 
-    public static String beforeLikeParam(String s) {
-        if (s == null || s.trim().isEmpty())
+    public static String leftLikeParam(String s) {
+        if (isEmpty(s))
+            return null;
+        return "%"+s.trim() ;
+    }
+
+    public static String rightLikeParam(String s) {
+        if (isEmpty(s))
             return null;
         return s.trim() + "%";
     }
 
     public static String emptyToNull(String s) {
-        if (s == null || s.isEmpty())
+        if (s == null || s.isEmpty()) {
             return null;
+        }
         return s;
+    }
+
+    /**
+     * 去掉换行符
+     * @param str
+     * @return
+     */
+    public static String  removeLF(String str){
+        if(isEmpty(str)){
+            return str;
+        }
+       return str.replaceAll("[\\t\\n\\r]","").trim();
+    }
+
+    /**
+     * 去掉空格，包含换行符
+     * 可以匹配空格、制表符、换页符等空白字符的其中任意一个
+     * @param str
+     * @return
+     */
+    public static String  removeBlank(String str){
+        if(isEmpty(str)){
+            return str;
+        }
+        return str.replaceAll("\\s","");
+
+    }
+
+    public static String nullToEmpty(String s) {
+        return s==null?EMPTY:s;
     }
 
     public static <E> Collection<E> addNotHas(Collection<E> source, Collection<E> target) {
@@ -107,12 +146,17 @@ public abstract class DataUtil {
     }
 
     public static String join(final String separator, Object... list) {
-        StringBuilder sb = new StringBuilder(list[0].toString());
+        if(list==null || list.length==0){
+            return EMPTY;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(list[0]);
         for (int i = 1; i < list.length; i++) {
             sb.append(separator).append(list[i]);
         }
         return sb.toString();
     }
+
 
     public static boolean matcher(String regex, String value) {
         Pattern pattern = Pattern.compile(regex);

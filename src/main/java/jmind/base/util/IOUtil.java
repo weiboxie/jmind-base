@@ -1,18 +1,8 @@
 package jmind.base.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import sun.misc.BASE64Encoder;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +38,32 @@ public class IOUtil {
             baos.write(i);
         }
         return baos.toString();
+    }
+
+    public static  String stream2Base64(InputStream in) throws IOException{
+        BASE64Encoder encoder = new BASE64Encoder();
+        BufferedInputStream bin=null;
+        ByteArrayOutputStream baos ;
+        BufferedOutputStream bout =null;
+        try {
+            bin= new BufferedInputStream(in);
+            baos = new ByteArrayOutputStream();
+            bout = new BufferedOutputStream(baos);
+            byte[] buffer = new byte[1024];
+            int len = bin.read(buffer);
+            while(len != -1){
+                bout.write(buffer, 0, len);
+                len = bin.read(buffer);
+            }
+            //刷新此输出流并强制写出所有缓冲的输出字节
+            bout.flush();
+            byte[] bytes = baos.toByteArray();
+            return encoder.encodeBuffer(bytes).trim();
+        }finally{
+                bin.close();
+                bout.close();
+        }
+
     }
 
     /**
@@ -238,21 +254,6 @@ public class IOUtil {
         return sb;
     }
 
-    public static void execult(String url) {
-        try {
-            String cmd = "wget --timeout=25 " + url + " -O  /root/a.txt";
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void sh(String cmd) {
-        try {
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

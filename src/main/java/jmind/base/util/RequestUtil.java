@@ -91,6 +91,15 @@ public abstract class RequestUtil {
         return m;
     }
 
+    public static  Map<String,String>  getHeaderMap(final HttpServletRequest request){
+        TreeMap<String, String> m = new TreeMap<String, String>();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+            String name=headerNames.nextElement();
+            m.put(name,request.getHeader(name));
+        }
+        return m;
+    }
 
 
     public static String toQueryString(Map<String, ?> params) {

@@ -143,6 +143,11 @@ public class CookieUtil {
         return getDomain(url);
     }
 
+//    public static final Sting getDomain(String url){
+//        InternetDomainName name = InternetDomainName.from(new URL(url).getHost()).topPrivateDomain();
+//        return name.toString();
+//    }
+
     public static final String getDomain(String url) {
         url = url.replace("http://", "");
         if (url.contains("/")) {
@@ -150,8 +155,9 @@ public class CookieUtil {
         }
         String[] str = url.split("\\.");
         int len = str.length;
-        if (len > 2)
+        if (len > 2) {
             return str[len - 2] + "." + str[len - 1];
+        }
         return url;
     }
 

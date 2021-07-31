@@ -87,7 +87,7 @@ public class IpUtil {
             if (isValidIP(ip))
                 return ip;
         }
-        return null;
+        return xff;
     }
 
     // long ip to string

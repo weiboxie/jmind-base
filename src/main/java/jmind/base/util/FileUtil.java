@@ -262,11 +262,11 @@ public class FileUtil {
      * @param dir 目录路径
      */
     public static void makeDir(File dir) {
-        if (!dir.exists()) {
-            makeDir(dir.getParentFile());
-            dir.mkdir();
+        if (dir.getParentFile()!=null) {
+            dir.getParentFile().mkdirs();
         }
     }
+
 
     /**
      * 删除文件

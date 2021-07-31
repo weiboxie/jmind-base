@@ -56,10 +56,10 @@ public class DateUtil {
      */
     public static Date getStartOfDay(Date date){
         Calendar calendar = Calendar.getInstance();
-        if(date!=null)
-        calendar.setTime(date);
-
-        calendar.set(Calendar.HOUR,0);
+        if(date!=null) {
+            calendar.setTime(date);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY,0);
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
         calendar.set(Calendar.MILLISECOND,0);
@@ -73,14 +73,58 @@ public class DateUtil {
      */
     public static Date getEndOfDay(Date date){
         Calendar calendar = Calendar.getInstance();
-        if(date!=null)
+        if(date!=null) {
             calendar.setTime(date);
-        calendar.set(Calendar.HOUR,23);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY,23);
         calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND,59);
-        calendar.set(Calendar.MILLISECOND,999);
+        //  这里应该是 999 ，但是mysql 到 500 就成第二天了，所以改成499
+        calendar.set(Calendar.MILLISECOND,499);
         return calendar.getTime();
     }
+
+    /**
+     * 获取某月第一天
+     * @param date  时间
+     * @param month  加的月份，例如 当月就是0 ，下一个月 就是 1
+     * @return
+     */
+    public static Date  getFristDayOfMonth(Date date,int month){
+        Calendar calendar = Calendar.getInstance();
+        if(date!=null) {
+            calendar.setTime(date);
+        }
+        calendar.add(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取一个月的最后一天
+     * @param date
+     * @param month
+     * @return
+     */
+    public static Date  getLastDayOfMonth(Date date,int month){
+        Calendar calendar = Calendar.getInstance();
+        if(date!=null) {
+            calendar.setTime(date);
+        }
+        calendar.add(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.MILLISECOND,499);
+        calendar.set(Calendar.MINUTE,59);
+        calendar.set(Calendar.SECOND,59);
+        calendar.set(Calendar.HOUR_OF_DAY,23);
+        return  calendar.getTime();
+
+    }
+
+
 
     public static String Today = getToday();
 
@@ -283,5 +327,21 @@ public class DateUtil {
             return format;
         }
     }
+
+    // jmind.base.util.DateUtil.formatInternationalDate(new Date(),"America/New_York","yyyy-MM-dd HH:mm:ss")
+
+    /**
+     *
+     * @param date
+     * @param tz 对应时区
+     * @param format
+     * @return
+     */
+    public static String formatInternationalDate(Date date,String tz,String format){
+        SimpleDateFormat bjSdf = new SimpleDateFormat(format);
+        bjSdf.setTimeZone(TimeZone.getTimeZone(tz));
+        return bjSdf.format(date);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package jmind.base.cache;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,12 +39,18 @@ public class LocalCache implements ICache {
     }
 
     @Override
+    public boolean mdelete(List<String> keys) {
+        keys.forEach(k->map.remove(k));
+        return true;
+    }
+
+    @Override
     public <T> T get(String key) {
         return (T) map.get(key);
     }
 
     @Override
-    public Map<String, ?> getMulti(Collection<String> keys) {
+    public Map<String, Object> getMulti(Collection<String> keys) {
         Map<String, Object> map = new HashMap<>();
         for (String key : keys) {
             Object value = get(key);

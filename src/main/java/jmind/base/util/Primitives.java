@@ -33,10 +33,12 @@ public final class Primitives {
 
   private static final Map<Class<?>, Class<?>> WRAPPER_TO_PRIMITIVE_TYPE;
 
+  private static final Map<Class<?>, Object> PRIMITIVE_DEFAUT_VALUE;
+
   static {
     Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);
     Map<Class<?>, Class<?>> wrapToPrim = new HashMap<Class<?>, Class<?>>(16);
-
+    PRIMITIVE_DEFAUT_VALUE=new HashMap<>();
     add(primToWrap, wrapToPrim, boolean.class, Boolean.class);
     add(primToWrap, wrapToPrim, byte.class, Byte.class);
     add(primToWrap, wrapToPrim, char.class, Character.class);
@@ -46,14 +48,28 @@ public final class Primitives {
     add(primToWrap, wrapToPrim, long.class, Long.class);
     add(primToWrap, wrapToPrim, short.class, Short.class);
 
+    PRIMITIVE_DEFAUT_VALUE.put(boolean.class,false);
+    PRIMITIVE_DEFAUT_VALUE.put(byte.class,(byte)0);
+    PRIMITIVE_DEFAUT_VALUE.put(char.class, ' ');
+    PRIMITIVE_DEFAUT_VALUE.put(double.class,0.0d);
+    PRIMITIVE_DEFAUT_VALUE.put(float.class,0.0f);
+    PRIMITIVE_DEFAUT_VALUE.put(int.class,0);
+    PRIMITIVE_DEFAUT_VALUE.put(long.class,0l);
+    PRIMITIVE_DEFAUT_VALUE.put(short.class,(short)0);
+
     PRIMITIVE_TO_WRAPPER_TYPE = Collections.unmodifiableMap(primToWrap);
     WRAPPER_TO_PRIMITIVE_TYPE = Collections.unmodifiableMap(wrapToPrim);
+    Collections.unmodifiableMap(PRIMITIVE_DEFAUT_VALUE);
   }
 
   private static void add(Map<Class<?>, Class<?>> forward,
                           Map<Class<?>, Class<?>> backward, Class<?> key, Class<?> value) {
     forward.put(key, value);
     backward.put(value, key);
+  }
+
+  public static  <T>  T  getPrimitiveDefaultValue(Class<T> clazz){
+    return (T) PRIMITIVE_DEFAUT_VALUE.get(clazz);
   }
 
   public static Set<Class<?>> allPrimitiveTypes() {

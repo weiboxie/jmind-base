@@ -1,6 +1,7 @@
 package jmind.base.sort;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,11 +12,13 @@ import java.util.List;
  */
 public class JSort {
     public static void main(String[] args) {
-        int a[] = { 49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 4, 62, 99, 98, 54, 56, 17, 18, 23, 34, 15, 35,
-                25, 53, 51 };
-        insertSort(a);
-        for (int i = 0; i < a.length; i++)
-            System.out.print(a[i] + ",");
+        int a[] = { 49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 4, 62, 99, 98, 54, 56, 17, 18, 23, 34, 15, 35, 25, 53, 51 };
+        System.err.println(a.length);
+        shellSort(a);
+        System.err.println(Arrays.toString(a));
+
+        bitMapSort(a);
+
 
     }
 
@@ -324,35 +327,45 @@ public class JSort {
 
     }
 
-    /**
-     * 使用位图法进行排序
-     *
-     * @param arr
-     */
-    public static void bitmapSort(int[] arr) {
 
-        // 找出数组中最值
-        int max = arr[0];
-        int min = max;
-        for (int i : arr) {
-            if (max < i) {
-                max = i;
-            }
-            if (min > i) {
-                min = i;
+
+    /**
+     * 利用BitMap进行排序;
+     * @param array
+     */
+    public static void bitMapSort(int[] array){
+
+        //开辟16个Byte;
+        byte[] bs=new byte[16];
+        for(int i=0;i<array.length;i++){
+            // num/8得到byte[]的index
+            int arrayIndex = array[i] >> 3;
+
+            // num%8得到在byte[index]的位置
+            int position = array[i] & 0x07;
+
+            //将1左移position后，那个位置自然就是1，然后和以前的数据做|，这样，那个位置就替换成1了。
+            bs[arrayIndex] |= 1 << position;
+        }
+        int count=0;
+        int num=0;
+        //遍历Byte表;
+        //考虑设置数组对应位的值;
+        for(int i=0;i<bs.length;i++){
+            byte b=bs[i];
+            for(int j=0;j<8;j++){
+                byte bi=(byte) (b&(0x01<<j));
+                if(bi!=0){
+                    num=i*8+j;
+                    array[count]=num;
+                    count++;
+                }
             }
         }
-        // 得到位图数组
-        int[] newArr = new int[max - min + 1];
-        // 重新调整arr中的元素
-        int index = 0;
-        for (int i = 0; i < newArr.length; i++) {
-            while (newArr[i] > 0) {
-                arr[index] = i + min;
-                index++;
-                newArr[i]--;
-            }
-        }
+        System.err.println(array.length);
+        System.err.println(Arrays.toString(array));
     }
+
+
 
 }
