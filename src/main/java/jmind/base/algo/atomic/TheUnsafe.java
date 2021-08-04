@@ -27,6 +27,8 @@ public class TheUnsafe {
           2. 反射获取
      */
     static {
+
+        // Unsafe.getUnsafe();   必须是BootstrapClassLoader 类加载器加载的类 才有权限这样获取
         try {
             final PrivilegedExceptionAction<Unsafe> action = new PrivilegedExceptionAction<Unsafe>() {
                 public Unsafe run() throws Exception {
