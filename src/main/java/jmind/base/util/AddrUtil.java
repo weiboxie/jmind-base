@@ -209,7 +209,7 @@ public abstract class AddrUtil {
 
     public static void main(String[] args) {
         System.out.println(getMACAddress());
-        System.out.println(getLocalMac());
+        System.out.println(getOSName());
 
     }
 
