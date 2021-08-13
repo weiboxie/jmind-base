@@ -34,12 +34,7 @@ public abstract class AddrUtil {
         return list;
     }
 
-    /**
-     * 获取当前操作系统名称. return 操作系统名称 例如:windows xp,linux 等.
-     */
-    public static String getOSName() {
-        return System.getProperty("os.name").toLowerCase();
-    }
+
     private static final String[] linuxCommand = { "/sbin/ifconfig", "-a" };
     /**
      * 获取unix网卡的mac地址. 非windows的系统默认调用本方法获取. 如果有特殊系统请继续扩充新的取mac地址方法.
@@ -207,11 +202,7 @@ public abstract class AddrUtil {
         return mac;
     }
 
-    public static void main(String[] args) {
-        System.out.println(getMACAddress());
-        System.out.println(getOSName());
 
-    }
 
 
 
