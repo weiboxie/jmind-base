@@ -1,24 +1,91 @@
 package jmind.base.util;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.activation.URLDataSource;
 import javax.imageio.ImageIO;
 
 public class FileUtil {
+
+
+    /**
+     * 获取文件总行数
+     * @param sourceFile
+     * @return
+     */
+    public static long getFileLines(String sourceFile){
+        try {
+            return  Files.lines(Paths.get(sourceFile)).count();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+    /**
+     * 按行读文件
+     * @param sourceFile
+     * @param start  从第几行开始，这里是从1开始不是0
+     * @param end  到第几行结束，包含第几行
+     * @return
+     */
+    public static List<String> readLinesByStream(String sourceFile, int start, int end){
+        try {
+            start=Math.max(start-1,0);
+            Stream<String> lines = Files.lines(Paths.get(sourceFile));
+            return lines.skip(start).limit(end-start).collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public static List<String> readLines(String sourceFile, int start, int end){
+        FileReader in = null;
+        LineNumberReader reader = null;
+        int arraySize=Math.abs(end-start);
+        List<String> resultStr = new ArrayList<>(5 + arraySize + (arraySize / 10));
+        try {
+            in = new FileReader(sourceFile);
+            reader = new LineNumberReader(in);
+            String line ;
+            do{
+                line=reader.readLine();
+                if(line==null){
+                    break;
+                }
+                //  从指定行开始添加到list
+                if(reader.getLineNumber()>=start){
+                    resultStr.add(line);
+                }
+                // 到指定行 ，或者没文件了，退出
+            }while (reader.getLineNumber()<end);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(reader != null){
+                    reader.close();
+                }
+                if(in != null){
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultStr;
+    }
 
     /**
      * 获取扩展名
