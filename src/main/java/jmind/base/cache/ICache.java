@@ -52,7 +52,6 @@ public interface ICache {
     default <V> V computeIfAbsent(String key,final int exp,
                               Function<String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
-      try {
           V v;
           if ((v = get(key)) == null) {
               V newValue;
@@ -62,16 +61,12 @@ public interface ICache {
               }
           }
           return v;
-      }catch (Exception e){
-          e.printStackTrace();
-          return mappingFunction.apply(key);
-      }
+
     }
 
     default <V> V computeIfAbsent(String key,
                               Function<? super String, ? extends V> mappingFunction) {
         Objects.requireNonNull(mappingFunction);
-        try{
             V v;
             if ((v = get(key)) == null) {
                 V newValue;
@@ -81,9 +76,6 @@ public interface ICache {
                 }
             }
             return v;
-        }catch (Exception e){
-            e.printStackTrace();
-            return mappingFunction.apply(key);
-        }
+
     }
 }
